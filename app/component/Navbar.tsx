@@ -12,14 +12,13 @@ const Navbar: React.FC<{ name: string }> = ({ name }) => {
       color='black'
       width='full'
     >
-      <Text fontSize='3xl' fontWeight='bold' fontFamily={'serif'}>
+      <Text fontSize='3xl' fontWeight='bold'>
         CuePal
       </Text>
       <Flex align='center'>
         <Text
           mr='4'
           fontSize={24}
-          fontFamily={'sans'}
         >{`Hello, ${name}!`}</Text>
         <Avatar name={name} />
       </Flex>
