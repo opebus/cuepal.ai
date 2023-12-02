@@ -46,7 +46,7 @@ const Page: React.FC = () => {
         justify='center'
         p={8}
         bg='gray.50'
-        minH='300px'
+        minH='100px'
       >
         <Text fontSize='4xl' fontWeight='bold' textAlign='center'>
           Course Name
@@ -74,7 +74,7 @@ const Page: React.FC = () => {
           borderRadius='md'
           className='bg-white shadow-md'
           overflowY='scroll'
-          maxH={'calc(100vh - 550px)'}
+          maxH={'calc(100vh - 400px)'}
         >
           <VStack spacing={4} p={4} overflowY='auto'>
             <HStack
@@ -130,7 +130,7 @@ const Page: React.FC = () => {
           p={4}
           overflowY='scroll'
           className='bg-white shadow-md'
-          maxH={'calc(100vh - 550px)'}
+          maxH={'calc(100vh - 400px)'}
         >
           <Text fontSize='3xl' fontWeight='bold' mb={4}>
             Analytics
@@ -143,7 +143,7 @@ const Page: React.FC = () => {
           borderColor={'black'}
           overflowY='scroll'
           className='bg-white shadow-md'
-          maxH={'calc(100vh - 550px)'}
+          maxH={'calc(100vh - 400px)'}
         >
           <VStack spacing={4} p={4} overflowY='auto'>
             <HStack justifyContent='space-between' width='full'>

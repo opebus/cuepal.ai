@@ -14,10 +14,16 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@phosphor-icons/react": "^2.0.15",
+    "@tiptap/extension-character-count": "^2.1.13",
+    "@tiptap/pm": "^2.1.13",
+    "@tiptap/react": "^2.1.13",
+    "@tiptap/starter-kit": "^2.1.13",
     "framer-motion": "^10.16.4",
     "next": "14.0.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tiptap": "^1.32.2"
   },
   "devDependencies": {
     "@types/node": "^20",
