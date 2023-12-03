@@ -1,12 +1,10 @@
-//import CoursePage from '../component/teacher/course';
-import CoursePage from '../components/student/course';
-import Navbar from '../components/Navbar';
+import CoursePage from "../components/student/course";
+import Scaffold from "../components/Scaffold";
 
 export default function Home() {
   return (
-    <div>
-      <Navbar name='John Doe' />
+    <Scaffold>
       <CoursePage />
-    </div>
+    </Scaffold>
   );
 }

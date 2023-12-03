@@ -1,29 +1,48 @@
-import { Avatar, Flex, Text } from '@chakra-ui/react';
+import React from "react";
+import {
+  Box,
+  VStack,
+  IconButton,
+  Tooltip,
+  Text,
+  Spacer,
+} from "@chakra-ui/react";
+import {
+  FiHome,
+  FiCalendar,
+  FiSettings,
+  FiBookOpen,
+  FiBriefcase,
+} from "react-icons/fi";
 
-const Navbar: React.FC<{ name: string }> = ({ name }) => {
+import { UserButton } from "@clerk/nextjs";
+
+const Menu = ({ label, icon }) => {
   return (
-    <Flex
-      as='nav'
-      align='center'
-      justify='space-between'
-      wrap='wrap'
-      padding='1rem'
-      bg='gray.100'
-      color='black'
-      width='full'
-    >
-      <Text fontSize='3xl' fontWeight='bold'>
-        CuePal
-      </Text>
-      <Flex align='center'>
-        <Text
-          mr='4'
-          fontSize={24}
-        >{`Hello, ${name}!`}</Text>
-        <Avatar name={name} />
-      </Flex>
-    </Flex>
+    <Tooltip label={label} placement="right">
+      <IconButton
+        aria-label={label}
+        icon={icon}
+        variant="ghost"
+        fontSize="24px"
+        background="gray.100"
+        _hover={{ bg: "blue.100" }}
+      />
+    </Tooltip>
   );
 };
 
-export default Navbar;
+export default function Navbar() {
+  return (
+    <VStack spacing="10" left="0" p="5" h="100%">
+      <Text fontSize="xl">Cuepal</Text>
+      <Menu label="Home" icon={<FiHome />} />
+      <Menu label="Education" icon={<FiBookOpen />} />
+      <Menu label="Work" icon={<FiBriefcase />} />
+      <Menu label="Calendar" icon={<FiCalendar />} />
+      <Menu label="Settings" icon={<FiSettings />} />
+      <Spacer />
+      <UserButton />
+    </VStack>
+  );
+}

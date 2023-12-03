@@ -1,3 +1,9 @@
+import Scaffold from "./components/Scaffold";
+
 export default function Home() {
-  return <div>Hello World</div>;
+  return (
+    <Scaffold>
+      <p>Hello</p>
+    </Scaffold>
+  );
 }
