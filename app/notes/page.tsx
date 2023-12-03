@@ -1,10 +1,10 @@
-import TipTap from '../components/TipTap';
-import Sidebar from '../components/Sidebar';
+import TipTap from "../components/TipTap";
+import Scaffold from "../components/Scaffold";
 
 export default function Home() {
   return (
-    <div>
-      <Sidebar />
-    </div>
+    <Scaffold>
+      <TipTap />
+    </Scaffold>
   );
 }
