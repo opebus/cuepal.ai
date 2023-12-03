@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  TEACHER
+  STUDENT
+}
+
+model User {
+  id              Int              @id @default(autoincrement())
+  name            String
+  role            UserRole
+  notes           Notes[]
+  classEnrollments ClassEnrollment[]
+  classesTaught   Class[]          @relation("ClassesTaught")
+}
+
+model Class {
+  id              Int              @id @default(autoincrement())
+  name            String
+  teacherID       Int
+  teacher         User             @relation(name: "ClassesTaught", fields: [teacherID], references: [id])
+  classSessions   ClassSession[]
+  classEnrollments ClassEnrollment[]
+}
+
+model ClassSession {
+  id              Int              @id @default(autoincrement())
+  date            DateTime
+  classID         Int
+  lessonPlan      String
+  classFeeling    Int
+  class           Class            @relation(fields: [classID], references: [id])
+  notes           Notes[]
+  analytics       Analytics[]
+}
+
+model Notes {
+  id              Int              @id @default(autoincrement())
+  content         String
+  userID          Int
+  classSessionID  Int
+  question        String
+  cueCard         String
+  user            User             @relation(fields: [userID], references: [id])
+  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+}
+
+model Analytics {
+  id              Int              @id @default(autoincrement())
+  classSessionID  Int
+  averageFeeling  Int
+  otherMetrics    String?
+  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+}
+
+model ClassEnrollment {
+  id              Int              @id @default(autoincrement())
+  userID          Int
+  classID         Int
+  user            User             @relation(fields: [userID], references: [id])
+  class           Class            @relation(fields: [classID], references: [id])
+}
