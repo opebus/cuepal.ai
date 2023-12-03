@@ -37,6 +37,7 @@ model ClassSession {
   date            DateTime
   classID         Int
   lessonPlan      String
+  transcript      String
   classFeeling    Int
   class           Class           @relation(fields: [classID], references: [id])
   notes           Notes[]
