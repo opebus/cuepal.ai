@@ -38,7 +38,7 @@ export async function POST(req: Request): Promise<Response> {
       },
       {
         role: 'user',
-        content: `Given these student notes: ${prompt}, generate 5 quiz questions related to the notes to test the students on their comprehension. Each question should be formatted as a separate JSON object in a list. Each object should have the structure: {"question": "Question text", "answers": ["Answer1", "Answer2", "Answer3", "Answer4"], "correct_answer": "CorrectAnswer"}. The final output should be a JSON array of these 5 question objects.`,
+        content: prompt,
       },
     ],
     temperature: 0.7,
