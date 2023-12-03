@@ -40,14 +40,33 @@ async function main() {
     },
   });
 
+  // Create a note without the question and cueCard fields
   await prisma.notes.create({
     data: {
       content:
         "Algebra is the study of mathematical symbols and the rules for manipulating these symbols.",
       userID: alonzo.id,
       classSessionID: classSession1.id,
-      question: "What is Algebra?",
-      cueCard: "Algebra Cue Card",
+    },
+  });
+
+  await prisma.question.create({
+    data: {
+      content: "What is Algebra?",
+      answer:
+        "A branch of mathematics dealing with symbols and the rules for manipulating those symbols.",
+      userID: alonzo.id,
+      classSessionID: classSession1.id,
+    },
+  });
+
+  // Create a cue card
+  await prisma.cueCard.create({
+    data: {
+      content: "Algebra Cue Card",
+      answer: "Algebra Answer",
+      userID: alonzo.id,
+      classSessionID: classSession1.id,
     },
   });
 

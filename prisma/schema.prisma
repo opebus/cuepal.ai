@@ -19,6 +19,8 @@ model User {
   notes           Notes[]
   classEnrollments ClassEnrollment[]
   classesTaught   Class[]          @relation("ClassesTaught")
+  questions       Question[]   
+  cueCards        CueCard[]  
 }
 
 model Class {
@@ -36,9 +38,11 @@ model ClassSession {
   classID         Int
   lessonPlan      String
   classFeeling    Int
-  class           Class            @relation(fields: [classID], references: [id])
+  class           Class           @relation(fields: [classID], references: [id])
   notes           Notes[]
   analytics       Analytics[]
+  questions       Question[]   
+  cueCards        CueCard[]     
 }
 
 model Notes {
@@ -46,8 +50,26 @@ model Notes {
   content         String
   userID          Int
   classSessionID  Int
-  question        String
-  cueCard         String
+  user            User             @relation(fields: [userID], references: [id])
+  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+}
+
+model Question {
+  id              Int              @id @default(autoincrement())
+  content         String
+  answer          String
+  userID          Int
+  classSessionID  Int
+  user            User             @relation(fields: [userID], references: [id])
+  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+}
+
+model CueCard {
+  id              Int              @id @default(autoincrement())
+  content         String
+  answer          String
+  userID          Int
+  classSessionID  Int
   user            User             @relation(fields: [userID], references: [id])
   classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
 }
