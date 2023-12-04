@@ -4,18 +4,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum UserRole {
-  TEACHER
-  STUDENT
+  url      = "postgresql://weichunnn:tvs5M3qRPwfh@ep-winter-bird-45355438.us-east-2.aws.neon.tech/cuepal?sslmode=require"
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
-  name            String
-  role            UserRole
+  id              String           @id @default(uuid())
   notes           Notes[]
   classEnrollments ClassEnrollment[]
   classesTaught   Class[]          @relation("ClassesTaught")
@@ -24,21 +17,21 @@ model User {
 }
 
 model Class {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   name            String
-  teacherID       Int
+  description     String
+  teacherID       String
   teacher         User             @relation(name: "ClassesTaught", fields: [teacherID], references: [id])
   classSessions   ClassSession[]
   classEnrollments ClassEnrollment[]
 }
 
 model ClassSession {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   date            DateTime
-  classID         Int
+  classID         String
   lessonPlan      String
   transcript      String
-  classFeeling    Int
   class           Class           @relation(fields: [classID], references: [id])
   notes           Notes[]
   analytics       Analytics[]
@@ -47,46 +40,46 @@ model ClassSession {
 }
 
 model Notes {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   content         String
-  userID          Int
-  classSessionID  Int
+  userID          String
+  classSessionID  String
   user            User             @relation(fields: [userID], references: [id])
   classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
 }
 
 model Question {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   content         String
   answer          String
-  userID          Int
-  classSessionID  Int
+  userID          String
+  classSessionID  String
   user            User             @relation(fields: [userID], references: [id])
   classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
 }
 
 model CueCard {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   content         String
   answer          String
-  userID          Int
-  classSessionID  Int
+  userID          String
+  classSessionID  String
   user            User             @relation(fields: [userID], references: [id])
   classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
 }
 
 model Analytics {
-  id              Int              @id @default(autoincrement())
-  classSessionID  Int
+  id              String           @id @default(uuid())
+  classSessionID  String
   averageFeeling  Int
   otherMetrics    String?
   classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
 }
 
 model ClassEnrollment {
-  id              Int              @id @default(autoincrement())
-  userID          Int
-  classID         Int
+  id              String           @id @default(uuid())
+  userID          String
+  classID         String
   user            User             @relation(fields: [userID], references: [id])
   class           Class            @relation(fields: [classID], references: [id])
 }
