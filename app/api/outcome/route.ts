@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../../../lib/prisma";
 
 export async function POST(req: Request): Promise<Response> {
   let body;
@@ -31,7 +29,6 @@ export async function POST(req: Request): Promise<Response> {
             answer: q.correct_answer,
             userID: userID,
             classSessionID: sessionID,
-            // Add other necessary fields if needed
           },
         })
       )
