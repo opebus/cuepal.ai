@@ -4,82 +4,88 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://weichunnn:tvs5M3qRPwfh@ep-winter-bird-45355438.us-east-2.aws.neon.tech/cuepal?sslmode=require"
 }
 
 model User {
-  id              String           @id @default(uuid())
-  notes           Notes[]
+  id               String            @id @default(uuid())
+  notes            Notes[]
   classEnrollments ClassEnrollment[]
-  classesTaught   Class[]          @relation("ClassesTaught")
-  questions       Question[]   
-  cueCards        CueCard[]  
+  classesTaught    Class[]           @relation("ClassesTaught")
+  questions        Question[]
+  cueCards         CueCard[]
 }
 
 model Class {
-  id              String           @id @default(uuid())
-  name            String
-  description     String
-  teacherID       String
-  teacher         User             @relation(name: "ClassesTaught", fields: [teacherID], references: [id])
-  classSessions   ClassSession[]
+  id               String            @id @default(uuid())
+  name             String
+  description      String
+  teacherId        String
+  teacher          User              @relation(name: "ClassesTaught", fields: [teacherId], references: [id])
+  classSessions    ClassSession[]
   classEnrollments ClassEnrollment[]
+  questions        Question[]
+  cueCards         CueCard[]
 }
 
 model ClassSession {
-  id              String           @id @default(uuid())
-  date            DateTime
-  classID         String
-  lessonPlan      String
-  transcript      String
-  class           Class           @relation(fields: [classID], references: [id])
-  notes           Notes[]
-  analytics       Analytics[]
-  questions       Question[]   
-  cueCards        CueCard[]     
+  id         String      @id @default(uuid())
+  date       DateTime
+  classId    String
+  lessonPlan String
+  transcript String
+  class      Class       @relation(fields: [classId], references: [id])
+  notes      Notes[]
+  analytics  Analytics[]
+  questions  Question[]
+  cueCards   CueCard[]
 }
 
 model Notes {
-  id              String           @id @default(uuid())
-  content         String
-  userID          String
-  classSessionID  String
-  user            User             @relation(fields: [userID], references: [id])
-  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+  id             String       @id @default(uuid())
+  content        String
+  userId         String
+  classSessionId String
+  user           User         @relation(fields: [userId], references: [id])
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
 }
 
 model Question {
-  id              String           @id @default(uuid())
-  content         String
-  answer          String
-  userID          String
-  classSessionID  String
-  user            User             @relation(fields: [userID], references: [id])
-  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+  id             String       @id @default(uuid())
+  content        String
+  answer         String
+  userId         String
+  classSessionId String
+  classId        String
+  user           User         @relation(fields: [userId], references: [id])
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  class          Class        @relation(fields: [classId], references: [id])
 }
 
 model CueCard {
-  id              String           @id @default(uuid())
-  content         String
-  answer          String
-  userID          String
-  classSessionID  String
-  user            User             @relation(fields: [userID], references: [id])
-  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+  id             String       @id @default(uuid())
+  content        String
+  answer         String
+  userId         String
+  classSessionId String
+  classId        String
+  user           User         @relation(fields: [userId], references: [id])
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  class          Class        @relation(fields: [classId], references: [id])
 }
 
 model Analytics {
-  id              String           @id @default(uuid())
-  classSessionID  String
-  averageFeeling  Int
-  otherMetrics    String?
-  classSession    ClassSession     @relation(fields: [classSessionID], references: [id])
+  id             String       @id @default(uuid())
+  classSessionId String
+  averageFeeling Int
+  otherMetrics   String?
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
 }
 
 model ClassEnrollment {
-  id              String           @id @default(uuid())
-  userID          String
-  classID         String
-  user            User             @relation(fields: [userID], references: [id])
-  class           Class            @relation(fields: [classID], references: [id])
+  id      String @id @default(uuid())
+  userId  String
+  classId String
+  user    User   @relation(fields: [userId], references: [id])
+  class   Class  @relation(fields: [classId], references: [id])
 }

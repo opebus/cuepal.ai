@@ -28,7 +28,7 @@ const Home = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userID: userId }),
+          body: JSON.stringify({ userId: userId }),
         });
 
         if (!response.ok) {

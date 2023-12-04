@@ -34,7 +34,7 @@ async function main() {
       date: new Date(),
       lessonPlan:
         "To provide students with an understanding of Albert Einstein's contributions to physics, specifically his theory of relativity and the photoelectric effect, and how these discoveries impacted science.",
-      classID: class1.id,
+      classId: class1.id,
       transcript:
         "Today, let's explore the fascinating world of Albert Einstein, a revolutionary physicist born in 1879 in Germany. Despite early challenges in schooling, Einstein made groundbreaking contributions to physics. His most famous work, the theory of relativity, encapsulated in the equation E=mc^2, transformed our understanding of how mass and energy are interconnected. This theory also revolutionized our concepts of space and time, suggesting they are not constant but can vary. Additionally, Einstein's work on the photoelectric effect, proposing that light can behave as particles, laid the foundation for quantum mechanics. His profound insights into the nature of the universe earned him the Nobel Prize in Physics in 1921 and forever changed how we perceive the world around us.",
     },
@@ -42,8 +42,8 @@ async function main() {
 
   await prisma.classEnrollment.create({
     data: {
-      userID: user1.id,
-      classID: class1.id,
+      userId: user1.id,
+      classId: class1.id,
     },
   });
 
@@ -52,8 +52,8 @@ async function main() {
     data: {
       content:
         "Algebra is the study of mathematical symbols and the rules for manipulating these symbols.",
-      userID: user1.id,
-      classSessionID: classSession1.id,
+      userId: user1.id,
+      classSessionId: classSession1.id,
     },
   });
 
@@ -62,8 +62,9 @@ async function main() {
       content: "What is Algebra?",
       answer:
         "A branch of mathematics dealing with symbols and the rules for manipulating those symbols.",
-      userID: user2.id,
-      classSessionID: classSession1.id,
+      userId: user2.id,
+      classSessionId: classSession1.id,
+      classId: class1.id,
     },
   });
 
@@ -72,14 +73,15 @@ async function main() {
     data: {
       content: "Algebra Cue Card",
       answer: "Algebra Answer",
-      userID: user1.id,
-      classSessionID: classSession1.id,
+      userId: user1.id,
+      classSessionId: classSession1.id,
+      classId: class1.id,
     },
   });
 
   await prisma.analytics.create({
     data: {
-      classSessionID: classSession1.id,
+      classSessionId: classSession1.id,
       averageFeeling: 4,
     },
   });

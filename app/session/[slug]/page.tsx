@@ -48,7 +48,7 @@ const CourseDetail = ({ params }: { params: { slug: string } }) => {
       <VStack spacing={4} p={5}>
         <Heading as="h1">Course Sessions for {slug}</Heading>
         {sessions.map((session, index) => (
-          <Link href={`/notes/${session.id}`} key={index}>
+          <Link href={`/notes/${session.classId}/${session.id}`} key={index}>
             <Box
               key={index}
               borderWidth="1px"

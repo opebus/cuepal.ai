@@ -30,7 +30,7 @@ export async function POST(req: Request): Promise<Response> {
     } else {
       // Fetch all sessions for a class by classId
       classSessions = await prisma.classSession.findMany({
-        where: { classID: classId },
+        where: { classId: classId },
         orderBy: { date: "desc" },
       });
     }

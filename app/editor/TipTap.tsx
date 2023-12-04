@@ -2,7 +2,7 @@
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useCompletion } from "ai/react";
@@ -54,7 +54,13 @@ const generate_questions_prompt = (lecture: string, notes: string) => {
   `;
 };
 
-const Tiptap = ({ sessionId }: { sessionId: string }) => {
+const Tiptap = ({
+  classId,
+  sessionId,
+}: {
+  classId: string;
+  sessionId: string;
+}) => {
   const { userId } = useAuth();
   const { complete } = useCompletion({
     api: "/api/completion",
@@ -128,6 +134,7 @@ const Tiptap = ({ sessionId }: { sessionId: string }) => {
         saveOutcome(
           userId,
           sessionId,
+          classId,
           response.quiz_questions,
           response.flashcards
         );
@@ -143,7 +150,13 @@ const Tiptap = ({ sessionId }: { sessionId: string }) => {
     }
   };
 
-  async function saveOutcome(userID, sessionID, quizQuestions, flashcards) {
+  async function saveOutcome(
+    userId,
+    sessionId,
+    quizQuestions,
+    flashcards,
+    classId
+  ) {
     try {
       const response = await fetch("/api/outcome", {
         method: "POST",
@@ -151,8 +164,9 @@ const Tiptap = ({ sessionId }: { sessionId: string }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userID,
-          sessionID,
+          userId,
+          sessionId,
+          classId,
           quiz_questions: quizQuestions,
           flashcards: flashcards,
         }),

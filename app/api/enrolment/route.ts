@@ -1,26 +1,26 @@
 import prisma from "../../../lib/prisma";
 
 export async function POST(req: Request): Promise<Response> {
-  let userID: string;
+  let userId: string;
 
   try {
-    ({ userID } = await req.json());
+    ({ userId } = await req.json());
   } catch (error) {
     return new Response("Invalid JSON format in request body.", {
       status: 400,
     });
   }
 
-  if (!userID) {
+  if (!userId) {
     return new Response(
-      "Missing userID – make sure to include a userID in your request body.",
+      "Missing userId – make sure to include a userId in your request body.",
       { status: 400 }
     );
   }
 
   try {
     const classEnrollments = await prisma.classEnrollment.findMany({
-      where: { userID },
+      where: { userId },
       select: {
         class: true,
       },

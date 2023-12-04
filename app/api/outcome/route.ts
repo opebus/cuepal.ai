@@ -11,9 +11,9 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
-  const { quiz_questions, flashcards, userID, sessionID } = body;
+  const { quiz_questions, flashcards, userId, sessionId, classId } = body;
 
-  if (!quiz_questions || !flashcards || !userID || !sessionID) {
+  if (!quiz_questions || !flashcards || !userId || !sessionId) {
     return new Response("Missing required fields in request body.", {
       status: 400,
     });
@@ -27,8 +27,9 @@ export async function POST(req: Request): Promise<Response> {
           data: {
             content: q.question,
             answer: q.correct_answer,
-            userID: userID,
-            classSessionID: sessionID,
+            userId,
+            classSessionId: sessionId,
+            classId,
           },
         })
       )
@@ -41,9 +42,9 @@ export async function POST(req: Request): Promise<Response> {
           data: {
             content: fc.term,
             answer: fc.definition,
-            userID: userID,
-            classSessionID: sessionID,
-            // Add other necessary fields if needed
+            userId,
+            classSessionId: sessionId,
+            classId,
           },
         })
       )

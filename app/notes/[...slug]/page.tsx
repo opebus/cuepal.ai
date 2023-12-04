@@ -8,7 +8,7 @@ export default function Home({ params }: { params: { slug: string } }) {
 
   return (
     <Scaffold>
-      <TipTap sessionId={slug} />
+      <TipTap classId={slug[0]} sessionId={slug[1]} />
     </Scaffold>
   );
 }
