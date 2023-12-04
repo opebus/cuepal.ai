@@ -15,21 +15,13 @@ function Hero() {
         marginBottom={12}
         fontFamily={'serif'}
       >
-        Cuepal <br />
+        Cuepal AI <br />
         <Text color={'gray.400'} fontSize='3xl' fontFamily='sans-serif'>
           AI flashcards for students
         </Text>
       </Heading>
       <SignInButton>
-        <Button
-          bg='green.400'
-          rounded='full'
-          px={6}
-          _hover={{
-            bg: 'green.500',
-            textColor: 'white',
-          }}
-        >
+        <Button colorScheme='teal' rounded='full' px={6}>
           Get Started
         </Button>
       </SignInButton>
