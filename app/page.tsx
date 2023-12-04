@@ -1,5 +1,9 @@
+'use client';
+
 import React from 'react';
 import { Box, Flex, Heading, Text, Button, Image } from '@chakra-ui/react';
+import { SignInButton, useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 function Hero() {
   return (
@@ -16,19 +20,19 @@ function Hero() {
           AI flashcards for students
         </Text>
       </Heading>
-      <Button
-        colorScheme='green'
-        variant='outline'
-        bg='green.400'
-        rounded='full'
-        px={6}
-        _hover={{
-          bg: 'green.500',
-          textColor: 'white',
-        }}
-      >
-        Get Started
-      </Button>
+      <SignInButton>
+        <Button
+          bg='green.400'
+          rounded='full'
+          px={6}
+          _hover={{
+            bg: 'green.500',
+            textColor: 'white',
+          }}
+        >
+          Get Started
+        </Button>
+      </SignInButton>
     </Box>
   );
 }
@@ -54,6 +58,13 @@ function AnimatedBlob() {
 }
 
 export default function Home() {
+  const { userId } = useAuth();
+  const router = useRouter();
+
+  if (userId) {
+    router.push('/home');
+  }
+
   return (
     <Flex
       align='center'

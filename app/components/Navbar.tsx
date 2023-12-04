@@ -44,7 +44,7 @@ export default function Navbar() {
       <Text fontSize='xl' marginBottom={20} fontFamily='serif' fontStyle='bold'>
         Cuepal
       </Text>
-      <Menu label='Home' icon={<PiHouse />} path='/' />
+      <Menu label='Home' icon={<PiHouse />} path='/home' />
       <Menu label='Class' icon={<PiGraduationCap />} path='/course' />
       <Menu label='Cards' icon={<PiCards />} path='/cards' />
       <Menu label='Calendar' icon={<PiCalendar />} path='/calendar' />
