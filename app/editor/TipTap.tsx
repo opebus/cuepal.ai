@@ -153,9 +153,9 @@ const Tiptap = ({
   async function saveOutcome(
     userId,
     sessionId,
+    classId,
     quizQuestions,
-    flashcards,
-    classId
+    flashcards
   ) {
     try {
       const response = await fetch("/api/outcome", {
