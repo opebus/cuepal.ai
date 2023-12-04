@@ -40,8 +40,8 @@ const Menu = ({ label, icon, path }) => {
 
 export default function Navbar() {
   return (
-    <VStack spacing="10" left="0" p="5" h="100%" shadow="xl">
-      <Text fontSize="xl" marginBottom={20} fontFamily="serif" fontStyle="bold">
+    <VStack spacing="10" left="0" p="3" h="100%" shadow="xl">
+      <Text fontSize="xl" marginBottom={20} fontStyle="bold">
         Cuepal
       </Text>
       <Menu label="Home" icon={<PiHouse />} path="/home" />
