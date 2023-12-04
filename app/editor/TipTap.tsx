@@ -8,12 +8,54 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { useCompletion } from 'ai/react';
 import { Button } from '@chakra-ui/react';
 import toast, { Toaster } from 'react-hot-toast';
-
 import './styles.css';
 
 interface TiptapProps {
   content: string;
 }
+
+const generate_questions_prompt = (lecture: string, notes: string) => {
+  return `Given the a lecture transcription and student notes, create flashcards and quiz questions. Each question should be designed to test the depth of student understanding on key concepts, facts, and principles covered in the notes. Ensure questions must be a multiple choice question to assess different aspects of learning. The flashcards should be designed to help students memorize key terms and definitions.
+
+  The information below is provided to help you generate the questions:
+
+  <NOTES>
+  ${notes}
+  </NOTES>
+
+  <LECTURE>
+  ${lecture}
+  </LECTURE>
+
+  Quiz Questions Format:
+  [
+    {
+      "question": "Question text",
+      "options": ["Option1", "Option2", ...],
+      "correct_answer": "CorrectAnswer",
+      "explanation": "BriefExplanationForTheAnswer"
+    },
+    // Four more question objects
+  ]
+  
+  Flashcards Format:
+  [
+    {
+      "term": "Term from notes",
+      "definition": "Definition or explanation of the term"
+    },
+    // As many flashcard objects as possible
+  ]
+
+  The final format:
+  {
+    "quiz_questions": [ ... ],
+    "flashcards": [ ... ]
+  }
+
+  The final output should be a JSON array of these two arrays.
+  `;
+};
 
 const Tiptap: React.FC<TiptapProps> = ({ content }) => {
   const { complete } = useCompletion({
@@ -38,19 +80,34 @@ const Tiptap: React.FC<TiptapProps> = ({ content }) => {
   // Function to handle the submission
   const handleSubmit = useCallback(async () => {
     const c = editor?.getText();
-    if (c.length == 0) {
+    if (!c || c.length === 0) {
       toast.error('Please write something first!');
       return;
     }
-    const completion = await complete(c);
+    const toastId = toast.loading('Generating questions...');
+    const completion = await complete(generate_questions_prompt(c, content));
     console.log(completion);
-    if (!completion) throw new Error('Failed to generate repsonse');
+    if (!completion) {
+      console.log('Failed to generate response');
+      toast.dismiss(toastId);
+      toast.error('Failed to generate questions. Please try again.');
+      return;
+    }
     try {
-      const questions = JSON.parse(completion);
-      toast.success('Successfully generated questions!');
-      console.log(questions);
+      const response = JSON.parse(completion);
+      if (response && response.quiz_questions && response.flashcards) {
+        toast.dismiss(toastId);
+        toast.success('Successfully generated questions and flashcards!');
+        console.log(response);
+      } else {
+        console.log('Invalid format: Missing quiz_questions or flashcards');
+        toast.dismiss(toastId);
+        toast.error('Invalid format. Please try again.');
+      }
     } catch (e) {
-      console.log(e);
+      console.log('Invalid JSON format', e);
+      toast.dismiss(toastId);
+      toast.error('Invalid JSON format. Please try again.');
     }
   }, [complete]);
 
@@ -74,7 +131,14 @@ const Tiptap: React.FC<TiptapProps> = ({ content }) => {
           editor={editor}
           className='min-h-[750px] mt-4 p-12 bg-white shadow-lg rounded-xl border border-gray-200 focus:outline-none'
         />
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button
+          onClick={handleSubmit}
+          colorScheme='blue'
+          variant='outline'
+          marginTop={10}
+        >
+          Submit
+        </Button>
       </div>
     </div>
   );
