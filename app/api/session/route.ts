@@ -1,4 +1,4 @@
-import prisma from "../../../lib/prisma";
+import prisma from '../../../lib/prisma';
 
 export async function POST(req: Request): Promise<Response> {
   let classId: string | null = null;
@@ -9,13 +9,13 @@ export async function POST(req: Request): Promise<Response> {
     classId = body.classId || null;
     sessionId = body.sessionId || null;
   } catch (error) {
-    return new Response("Invalid JSON format in request body.", {
+    return new Response('Invalid JSON format in request body.', {
       status: 400,
     });
   }
 
   if (!classId && !sessionId) {
-    return new Response("Missing classId or sessionId parameter", {
+    return new Response('Missing classId or sessionId parameter', {
       status: 400,
     });
   }
@@ -31,20 +31,21 @@ export async function POST(req: Request): Promise<Response> {
       // Fetch all sessions for a class by classId
       classSessions = await prisma.classSession.findMany({
         where: { classId: classId },
-        orderBy: { date: "desc" },
+        include: { class: true },
+        orderBy: { date: 'desc' },
       });
     }
 
     return new Response(JSON.stringify(classSessions), {
       status: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   } catch (error) {
     console.error(error);
     return new Response(
-      "An error occurred while fetching the class sessions.",
+      'An error occurred while fetching the class sessions.',
       {
         status: 500,
       }

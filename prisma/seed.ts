@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -6,14 +6,14 @@ async function main() {
   const user1 = await prisma.user.create({
     data: {
       // weichun
-      id: "user_2Z4vio7J3QMiaWm2BrHdgVOkUHP",
+      id: 'user_2Z4vio7J3QMiaWm2BrHdgVOkUHP',
     },
   });
 
   const user2 = await prisma.user.create({
     data: {
       // ben
-      id: "user_2Z19fTrqYrvXDEsmsbEJh8LhVd6",
+      id: 'user_2Z19fTrqYrvXDEsmsbEJh8LhVd6',
     },
   });
 
@@ -21,8 +21,8 @@ async function main() {
   // Example:
   const class1 = await prisma.class.create({
     data: {
-      name: "Physics 101",
-      description: "Learn about the world around you!",
+      name: 'Physics 101',
+      description: 'Learn about the world around you!',
       teacher: {
         connect: { id: user2.id },
       },
@@ -47,34 +47,9 @@ async function main() {
     },
   });
 
-  // Create a note without the question and cueCard fields
-  await prisma.notes.create({
+  await prisma.classEnrollment.create({
     data: {
-      content:
-        "Algebra is the study of mathematical symbols and the rules for manipulating these symbols.",
-      userId: user1.id,
-      classSessionId: classSession1.id,
-    },
-  });
-
-  await prisma.question.create({
-    data: {
-      content: "What is Algebra?",
-      answer:
-        "A branch of mathematics dealing with symbols and the rules for manipulating those symbols.",
       userId: user2.id,
-      classSessionId: classSession1.id,
-      classId: class1.id,
-    },
-  });
-
-  // Create a cue card
-  await prisma.cueCard.create({
-    data: {
-      content: "Algebra Cue Card",
-      answer: "Algebra Answer",
-      userId: user1.id,
-      classSessionId: classSession1.id,
       classId: class1.id,
     },
   });

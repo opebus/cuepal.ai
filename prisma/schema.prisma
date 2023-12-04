@@ -9,11 +9,11 @@ datasource db {
 
 model User {
   id               String            @id @default(uuid())
-  notes            Notes[]
-  classEnrollments ClassEnrollment[]
   classesTaught    Class[]           @relation("ClassesTaught")
-  questions        Question[]
+  classEnrollments ClassEnrollment[]
   cueCards         CueCard[]
+  notes            Notes[]
+  questions        Question[]
 }
 
 model Class {
@@ -21,11 +21,11 @@ model Class {
   name             String
   description      String
   teacherId        String
-  teacher          User              @relation(name: "ClassesTaught", fields: [teacherId], references: [id])
-  classSessions    ClassSession[]
+  teacher          User              @relation("ClassesTaught", fields: [teacherId], references: [id])
   classEnrollments ClassEnrollment[]
-  questions        Question[]
+  classSessions    ClassSession[]
   cueCards         CueCard[]
+  questions        Question[]
 }
 
 model ClassSession {
@@ -34,11 +34,11 @@ model ClassSession {
   classId    String
   lessonPlan String
   transcript String
-  class      Class       @relation(fields: [classId], references: [id])
-  notes      Notes[]
   analytics  Analytics[]
-  questions  Question[]
+  class      Class       @relation(fields: [classId], references: [id])
   cueCards   CueCard[]
+  notes      Notes[]
+  questions  Question[]
 }
 
 model Notes {
@@ -46,20 +46,22 @@ model Notes {
   content        String
   userId         String
   classSessionId String
-  user           User         @relation(fields: [userId], references: [id])
   classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
 }
 
 model Question {
   id             String       @id @default(uuid())
   content        String
-  answer         String
+  options        Json
+  correctAnswer  String
+  explanation    String
   userId         String
   classSessionId String
   classId        String
-  user           User         @relation(fields: [userId], references: [id])
-  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
   class          Class        @relation(fields: [classId], references: [id])
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
 }
 
 model CueCard {
@@ -69,9 +71,9 @@ model CueCard {
   userId         String
   classSessionId String
   classId        String
-  user           User         @relation(fields: [userId], references: [id])
-  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
   class          Class        @relation(fields: [classId], references: [id])
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
 }
 
 model Analytics {
@@ -86,6 +88,6 @@ model ClassEnrollment {
   id      String @id @default(uuid())
   userId  String
   classId String
-  user    User   @relation(fields: [userId], references: [id])
   class   Class  @relation(fields: [classId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }

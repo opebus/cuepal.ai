@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Box, VStack, Heading, Text, useToast } from "@chakra-ui/react";
-import Scaffold from "../../components/Scaffold";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import { Box, VStack, Heading, Text, useToast } from '@chakra-ui/react';
+import Scaffold from '../../components/Scaffold';
+import Link from 'next/link';
 
 const CourseDetail = ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
@@ -12,12 +12,12 @@ const CourseDetail = ({ params }: { params: { slug: string } }) => {
 
   useEffect(() => {
     const fetchCourseSessions = async () => {
-      console.log("fetching course sessions");
+      console.log('fetching course sessions');
       try {
-        const response = await fetch("/api/session", {
-          method: "POST",
+        const response = await fetch('/api/session', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ classId: slug }),
         });
@@ -25,16 +25,15 @@ const CourseDetail = ({ params }: { params: { slug: string } }) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const data = await response.json();
         console.log(data);
         setSessions(data);
       } catch (error) {
-        console.error("Error fetching course sessions:", error);
+        console.error('Error fetching course sessions:', error);
         toast({
-          title: "Error",
-          description: "Failed to load course sessions.",
-          status: "error",
+          title: 'Error',
+          description: 'Failed to load course sessions.',
+          status: 'error',
           duration: 9000,
           isClosable: true,
         });
@@ -46,19 +45,19 @@ const CourseDetail = ({ params }: { params: { slug: string } }) => {
   return (
     <Scaffold>
       <VStack spacing={4} p={5}>
-        <Heading as="h1">Course Sessions for {slug}</Heading>
+        <Heading as='h1'>Lessosn for {sessions[0]?.class?.name}</Heading>
         {sessions.map((session, index) => (
           <Link href={`/notes/${session.classId}/${session.id}`} key={index}>
             <Box
               key={index}
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              width="100%"
+              borderWidth='1px'
+              borderRadius='lg'
+              overflow='hidden'
+              width='100%'
               p={5}
             >
-              <Text fontWeight="bold">
-                Session {new Date(session.date).toLocaleDateString()}
+              <Text fontWeight='bold'>
+                Lesson {new Date(session.date).toLocaleDateString()}
               </Text>
             </Box>
           </Link>

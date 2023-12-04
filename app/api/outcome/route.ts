@@ -1,4 +1,4 @@
-import prisma from "../../../lib/prisma";
+import prisma from '../../../lib/prisma';
 
 export async function POST(req: Request): Promise<Response> {
   let body;
@@ -6,7 +6,7 @@ export async function POST(req: Request): Promise<Response> {
   try {
     body = await req.json();
   } catch (error) {
-    return new Response("Invalid JSON format in request body.", {
+    return new Response('Invalid JSON format in request body.', {
       status: 400,
     });
   }
@@ -15,7 +15,7 @@ export async function POST(req: Request): Promise<Response> {
     body;
 
   if (!quiz_questions || !flashcards || !notes || !userId || !sessionId) {
-    return new Response("Missing required fields in request body.", {
+    return new Response('Missing required fields in request body.', {
       status: 400,
     });
   }
@@ -35,7 +35,9 @@ export async function POST(req: Request): Promise<Response> {
         prisma.question.create({
           data: {
             content: q.question,
-            answer: q.correct_answer,
+            correctAnswer: q.correct_answer,
+            options: q.options,
+            explanation: q.explanation,
             userId,
             classSessionId: sessionId,
             classId,
@@ -59,13 +61,13 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
 
-    return new Response("Data saved successfully", {
+    return new Response('Data saved successfully', {
       status: 200,
     });
   } catch (error) {
     console.error(error);
     return new Response(
-      "An error occurred while saving data to the database.",
+      'An error occurred while saving data to the database.',
       {
         status: 500,
       }
