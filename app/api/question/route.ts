@@ -19,7 +19,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   try {
-    const cueCards = await prisma.cueCard.findMany({
+    const cueCards = await prisma.question.findMany({
       where: {
         userId,
         classId,
@@ -34,7 +34,7 @@ export async function POST(req: Request): Promise<Response> {
     });
   } catch (error) {
     console.error(error);
-    return new Response("An error occurred while fetching the cue cards.", {
+    return new Response("An error occurred while fetching the questions.", {
       status: 500,
     });
   }

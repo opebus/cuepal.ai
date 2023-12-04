@@ -135,6 +135,7 @@ const Tiptap = ({
           userId,
           sessionId,
           classId,
+          c,
           response.quiz_questions,
           response.flashcards
         );
@@ -154,6 +155,7 @@ const Tiptap = ({
     userId,
     sessionId,
     classId,
+    notes,
     quizQuestions,
     flashcards
   ) {
@@ -167,6 +169,7 @@ const Tiptap = ({
           userId,
           sessionId,
           classId,
+          notes,
           quiz_questions: quizQuestions,
           flashcards: flashcards,
         }),

@@ -1,5 +1,5 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   VStack,
@@ -11,122 +11,161 @@ import {
   Container,
   HStack,
   Spacer,
-} from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import Scaffold from '../components/Scaffold';
-
-const flashcardsData = [
-  {
-    term: 'Sir Isaac Newton',
-    definition:
-      '17th-century mathematician and physicist who made significant contributions to physics and mathematics.',
-  },
-  {
-    term: 'Gravity',
-    definition: 'Force that attracts objects to each other.',
-  },
-  {
-    term: "Newton's Law of Universal Gravitation",
-    definition:
-      'A law stating that all objects in the universe attract each other.',
-  },
-  {
-    term: 'Masses of Objects',
-    definition:
-      'One of the factors that the force of gravity depends on; larger mass means stronger gravitational pull.',
-  },
-  {
-    term: 'Distance Between Objects',
-    definition:
-      'One of the factors that the force of gravity depends on; closer objects exert a stronger force, while farther objects exert a weaker force.',
-  },
-  {
-    term: "Newton's Formula for Gravitational Force",
-    definition:
-      'The formula is Force = (Mass1 × Mass2) / Distance² × Gravitational Constant.',
-  },
-  {
-    term: 'Gravity and Planetary Motion',
-    definition: 'The concept that explains why planets orbit the Sun.',
-  },
-];
+  Select,
+  useToast,
+} from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import Scaffold from "../components/Scaffold";
+import { useAuth } from "@clerk/nextjs";
 
 const FlashcardsComponent = () => {
+  const [courses, setCourses] = useState([]);
+  const [currentCourse, setCurrentCourse] = useState("");
+  const [flashcards, setFlashcards] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [testMode, setTestMode] = useState(false);
+  const toast = useToast();
+  const { userId } = useAuth();
+
+  useEffect(() => {
+    const fetchFlashcards = async () => {
+      try {
+        const response = await fetch("/api/card", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            classId: currentCourse,
+            userId,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setFlashcards(data);
+      } catch (error) {
+        console.error("Error fetching flashcards:", error);
+        toast({
+          title: "An error occurred.",
+          description: "Unable to load class flashcards.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    };
+
+    currentCourse != "" && fetchFlashcards();
+  }, [currentCourse]);
+
+  useEffect(() => {
+    const fetchEnrollments = async () => {
+      try {
+        const response = await fetch("/api/enrolment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: userId }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const classEnrollments = await response.json();
+        setCourses(classEnrollments);
+      } catch (error) {
+        console.error("Fetching class enrollments failed", error);
+        toast({
+          title: "An error occurred.",
+          description: "Unable to load class enrollments.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    };
+    if (userId) fetchEnrollments();
+  }, [userId]);
 
   const handlePrevCard = () => {
     setCurrentCardIndex((index) =>
-      index > 0 ? index - 1 : flashcardsData.length - 1
+      index > 0 ? index - 1 : flashcards.length - 1
     );
     setShowAnswer(false);
   };
 
   const handleNextCard = () => {
     setCurrentCardIndex((index) =>
-      index < flashcardsData.length - 1 ? index + 1 : 0
+      index < flashcards.length - 1 ? index + 1 : 0
     );
     setShowAnswer(false);
   };
 
   if (testMode) {
-    const flashcard = flashcardsData[currentCardIndex];
+    const flashcard = flashcards[currentCardIndex];
 
     return (
       <Scaffold>
         <Container centerContent>
-          <VStack spacing={4} align='stretch' m={4} width='full'>
-            <Heading as='h1' size='xl' textAlign='center'>
+          <VStack spacing={4} align="stretch" m={4} width="full">
+            <Heading as="h1" size="xl" textAlign="center">
               Test Yourself
             </Heading>
+
             <Box
-              borderRadius='lg'
+              borderRadius="lg"
               p={5}
-              bg='gray.700'
-              color='white'
-              width='600px' // Fixed width
-              height='300px' // Fixed height
-              boxShadow='dark-lg'
+              bg="gray.700"
+              color="white"
+              width="600px" // Fixed width
+              height="300px" // Fixed height
+              boxShadow="dark-lg"
               onClick={() => setShowAnswer(!showAnswer)}
-              cursor='pointer'
-              display='flex'
-              alignItems='center'
-              justifyContent='center'
-              textAlign='center'
+              cursor="pointer"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
               mb={4}
             >
-              <Text fontSize='2xl'>
-                {showAnswer ? flashcard.definition : flashcard.term}
+              <Text fontSize="2xl">
+                {showAnswer ? flashcard.answer : flashcard.content}
               </Text>
             </Box>
-            <Flex alignItems='center' justifyContent='space-around'>
+            <Flex alignItems="center" justifyContent="space-around">
               <IconButton
-                aria-label='Previous card'
+                aria-label="Previous card"
                 icon={<ChevronLeftIcon />}
                 onClick={handlePrevCard}
-                color='white'
-                bgColor='blue.500'
-                borderRadius='full'
-                _hover={{ bgColor: 'blue.600' }}
+                color="white"
+                bgColor="blue.500"
+                borderRadius="full"
+                _hover={{ bgColor: "blue.600" }}
               />
-              <Text fontSize='xl'>
-                {currentCardIndex + 1}/{flashcardsData.length}
+              <Text fontSize="xl">
+                {currentCardIndex + 1}/{flashcards.length}
               </Text>
               <IconButton
-                aria-label='Next card'
+                aria-label="Next card"
                 icon={<ChevronRightIcon />}
                 onClick={handleNextCard}
-                color='white'
-                bgColor='blue.500'
-                borderRadius='full'
-                _hover={{ bgColor: 'blue.600' }}
+                color="white"
+                bgColor="blue.500"
+                borderRadius="full"
+                _hover={{ bgColor: "blue.600" }}
               />
             </Flex>
             <Spacer />
             <Button
-              colorScheme='blue'
-              alignSelf='center'
+              colorScheme="blue"
+              alignSelf="center"
               onClick={() => setTestMode(false)}
             >
               Back to Flashcards List
@@ -139,40 +178,54 @@ const FlashcardsComponent = () => {
 
   return (
     <Scaffold>
-      <VStack spacing={4} align='stretch' m={20}>
-        <Flex justifyContent='space-between' alignItems='center'>
-          <Heading as='h1' size='xl'>
+      <VStack spacing={4} align="stretch" m={20}>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading as="h1" size="xl">
             Flashcards
           </Heading>
-          <Button
-            variant='outline'
-            colorScheme='blue'
-            onClick={() => setTestMode(true)}
-          >
-            Test Myself
-          </Button>
+
+          <HStack>
+            <Select
+              width={300}
+              value={currentCourse}
+              placeholder="Select option"
+              onChange={(e) => setCurrentCourse(e.target.value)}
+            >
+              {courses.map((course) => (
+                <option value={course.id}>{course.name}</option>
+              ))}
+            </Select>
+            <Button
+              width={200}
+              variant="outline"
+              colorScheme="blue"
+              onClick={() => setTestMode(true)}
+            >
+              Test Myself
+            </Button>
+          </HStack>
         </Flex>
-        {flashcardsData.map((flashcard, index) => (
+        {flashcards.map((flashcard, index) => (
           <HStack
             key={index}
             spacing={8}
-            justifyContent='space-between'
-            alignItems='flex-start'
+            justifyContent="space-between"
+            alignItems="flex-start"
             p={5}
-            borderWidth='1px'
-            borderRadius='lg'
+            borderWidth="1px"
+            borderRadius="lg"
           >
-            <VStack align='stretch' width='50%'>
-              <Text fontSize='md' fontWeight='bold'>
+            <VStack align="stretch" width="50%">
+              <Text fontSize="md" fontWeight="bold">
                 TERM
               </Text>
-              <Text fontSize='lg'>{flashcard.term}</Text>
+              <Text fontSize="lg">{flashcard.content}</Text>
             </VStack>
-            <VStack align='stretch' width='50%'>
-              <Text fontSize='md' fontWeight='bold'>
+            <VStack align="stretch" width="50%">
+              <Text fontSize="md" fontWeight="bold">
                 DEFINITION
               </Text>
-              <Text fontSize='lg'>{flashcard.definition}</Text>
+              <Text fontSize="lg">{flashcard.answer}</Text>
             </VStack>
           </HStack>
         ))}

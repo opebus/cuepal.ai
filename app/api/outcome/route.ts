@@ -11,15 +11,24 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
-  const { quiz_questions, flashcards, userId, sessionId, classId } = body;
+  const { quiz_questions, flashcards, notes, userId, sessionId, classId } =
+    body;
 
-  if (!quiz_questions || !flashcards || !userId || !sessionId) {
+  if (!quiz_questions || !flashcards || !notes || !userId || !sessionId) {
     return new Response("Missing required fields in request body.", {
       status: 400,
     });
   }
 
   try {
+    await prisma.notes.create({
+      data: {
+        content: notes,
+        userId,
+        classSessionId: sessionId,
+      },
+    });
+
     // Save each quiz question
     await Promise.all(
       quiz_questions.map((q: any) =>
