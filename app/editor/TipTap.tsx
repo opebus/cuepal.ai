@@ -101,18 +101,20 @@ const Tiptap = ({
       return await response.json();
     } catch (error) {
       console.error("Error fetching course sessions:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load course sessions.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
+      // toast({
+      //   title: "Error",
+      //   description: "Failed to load course sessions.",
+      //   status: "error",
+      //   duration: 9000,
+      //   isClosable: true,
+      // });
     }
   };
   // Function to handle the submission
   const handleSubmit = async () => {
     const sessionData = await fetchSession();
+
+    console.log("session", sessionData);
 
     const c = editor?.getText();
     if (!c || c.length === 0) {
@@ -131,6 +133,7 @@ const Tiptap = ({
     }
     try {
       const response = JSON.parse(completion);
+      console.log(response);
       if (response && response.quiz_questions && response.flashcards) {
         toast.dismiss(toastId);
         toast.success("Successfully generated questions and flashcards!");
@@ -142,7 +145,7 @@ const Tiptap = ({
           response.quiz_questions,
           response.flashcards
         );
-        router.push("/quiz");
+        router.push(`/quiz/${sessionId}`);
       } else {
         console.log("Invalid format: Missing quiz_questions or flashcards");
         toast.dismiss(toastId);

@@ -2,18 +2,18 @@ import prisma from "../../../lib/prisma";
 
 export async function POST(req: Request): Promise<Response> {
   let userId: string;
-  let classId: string;
+  let classSessionId: string;
 
   try {
-    ({ userId, classId } = await req.json());
+    ({ userId, classSessionId } = await req.json());
   } catch (error) {
     return new Response("Invalid JSON format in request body.", {
       status: 400,
     });
   }
 
-  if (!userId || !classId) {
-    return new Response("Missing userId or classId parameter", {
+  if (!userId || !classSessionId) {
+    return new Response("Missing userId or classSessionId parameter", {
       status: 400,
     });
   }
@@ -22,7 +22,7 @@ export async function POST(req: Request): Promise<Response> {
     const cueCards = await prisma.question.findMany({
       where: {
         userId,
-        classId,
+        classSessionId,
       },
     });
 
