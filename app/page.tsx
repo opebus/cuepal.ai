@@ -21,7 +21,7 @@ function Hero() {
         </Text>
       </Heading>
       <SignInButton>
-        <Button colorScheme='teal' rounded='full' px={6}>
+        <Button colorScheme='teal' variant='solid' px={6}>
           Get Started
         </Button>
       </SignInButton>
@@ -37,7 +37,6 @@ function AnimatedBlob() {
       <Box className='absolute -bottom-8 left-44 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000'></Box>
       <Box className='absolute -bottom-8 left-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000'></Box>
       <div className='relative'>
-        {' '}
         <Image
           src='newton.svg'
           alt='Vector Art'
