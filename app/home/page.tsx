@@ -45,7 +45,6 @@ export default function Dashboard() {
 
   const chartOptions = {
     chart: {
-      type: 'bar',
       height: 350,
     },
     plotOptions: {
