@@ -10,6 +10,7 @@ import { Button } from "@chakra-ui/react";
 import toast, { Toaster } from "react-hot-toast";
 import "./styles.css";
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const generate_questions_prompt = (lecture: string, notes: string) => {
   return `Given the a lecture transcription and student notes, create flashcards and quiz questions. Each question should be designed to test the depth of student understanding on key concepts, facts, and principles covered in the notes. Ensure questions must be a multiple choice question to assess different aspects of learning. The flashcards should be designed to help students memorize key terms and definitions.
@@ -62,6 +63,8 @@ const Tiptap = ({
   sessionId: string;
 }) => {
   const { userId } = useAuth();
+  const router = useRouter();
+
   const { complete } = useCompletion({
     api: "/api/completion",
   });
@@ -139,6 +142,7 @@ const Tiptap = ({
           response.quiz_questions,
           response.flashcards
         );
+        router.push("/quiz");
       } else {
         console.log("Invalid format: Missing quiz_questions or flashcards");
         toast.dismiss(toastId);
@@ -201,14 +205,15 @@ const Tiptap = ({
     <div className="w-full">
       <Toaster />
       <div className="min-w-[768px] w-[768px] m-auto">
+        <h2 className="text-3xl font-bold mb-4">Notes for Intro to Gravity</h2>
         {editor.storage.characterCount.words()} words
         <EditorContent
           editor={editor}
-          className="min-h-[750px] mt-4 p-12 bg-white shadow-lg rounded-xl border border-gray-200 focus:outline-none"
+          className="min-h-[400px] mt-4 p-12 bg-white shadow-lg rounded-md border border-gray-200 focus:outline-none"
         />
         <Button
           onClick={handleSubmit}
-          colorScheme="blue"
+          colorScheme="teal"
           variant="outline"
           marginTop={10}
         >
