@@ -1,5 +1,5 @@
-"use client";
-import React, { useState, useEffect } from "react";
+'use client';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   VStack,
@@ -13,14 +13,14 @@ import {
   Spacer,
   Select,
   useToast,
-} from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import Scaffold from "../components/Scaffold";
-import { useAuth } from "@clerk/nextjs";
+} from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import Scaffold from '../components/Scaffold';
+import { useAuth } from '@clerk/nextjs';
 
 const FlashcardsComponent = () => {
   const [courses, setCourses] = useState([]);
-  const [currentCourse, setCurrentCourse] = useState("");
+  const [currentCourse, setCurrentCourse] = useState('');
   const [flashcards, setFlashcards] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -31,10 +31,10 @@ const FlashcardsComponent = () => {
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const response = await fetch("/api/card", {
-          method: "POST",
+        const response = await fetch('/api/card', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             classId: currentCourse,
@@ -49,27 +49,27 @@ const FlashcardsComponent = () => {
         const data = await response.json();
         setFlashcards(data);
       } catch (error) {
-        console.error("Error fetching flashcards:", error);
+        console.error('Error fetching flashcards:', error);
         toast({
-          title: "An error occurred.",
-          description: "Unable to load class flashcards.",
-          status: "error",
+          title: 'An error occurred.',
+          description: 'Unable to load class flashcards.',
+          status: 'error',
           duration: 9000,
           isClosable: true,
         });
       }
     };
 
-    currentCourse != "" && fetchFlashcards();
+    currentCourse != '' && fetchFlashcards();
   }, [currentCourse]);
 
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
-        const response = await fetch("/api/enrolment", {
-          method: "POST",
+        const response = await fetch('/api/enrolment', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ userId: userId }),
         });
@@ -81,11 +81,11 @@ const FlashcardsComponent = () => {
         const classEnrollments = await response.json();
         setCourses(classEnrollments);
       } catch (error) {
-        console.error("Fetching class enrollments failed", error);
+        console.error('Fetching class enrollments failed', error);
         toast({
-          title: "An error occurred.",
-          description: "Unable to load class enrollments.",
-          status: "error",
+          title: 'An error occurred.',
+          description: 'Unable to load class enrollments.',
+          status: 'error',
           duration: 9000,
           isClosable: true,
         });
@@ -113,70 +113,82 @@ const FlashcardsComponent = () => {
 
     return (
       <Scaffold>
-        <Box bg="white" minH="full" borderRadius="lg" shadow="md" m={1} p={5}>
-          <Container centerContent>
-            <VStack spacing={4} align="stretch" m={4} width="full">
-              <Heading as="h1" size="xl" textAlign="center">
+        <Box
+          bg='white'
+          minH='full'
+          width='full'
+          borderRadius='lg'
+          shadow='md'
+          m={1}
+          p={5}
+        >
+          <Box>
+            <VStack spacing={4} align='center' m={4} width='full'>
+              <Heading as='h1' size='xl' textAlign='center'>
                 Test Yourself
               </Heading>
 
-              <Text color="gray" textAlign="center">
+              <Text color='gray' textAlign='center'>
                 Click to show answers
               </Text>
 
               <Box
-                borderRadius="lg"
+                borderRadius='lg'
                 p={5}
-                bg="gray.700"
-                color="white"
-                width="600px" // Fixed width
-                height="300px" // Fixed height
-                boxShadow="dark-lg"
+                bg='gray.700'
+                color='white'
+                width='800px' // Fixed width
+                height='600px' // Fixed height
+                boxShadow='dark-lg'
                 onClick={() => setShowAnswer(!showAnswer)}
-                cursor="pointer"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                textAlign="center"
+                cursor='pointer'
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+                textAlign='center'
                 mb={4}
               >
-                <Text fontSize="2xl">
+                <Text fontSize='2xl'>
                   {showAnswer ? flashcard.answer : flashcard.content}
                 </Text>
               </Box>
-              <Flex alignItems="center" justifyContent="space-around">
+              <Flex
+                alignItems='center'
+                justifyContent='space-around'
+                className='space-x-10'
+              >
                 <IconButton
-                  aria-label="Previous card"
+                  aria-label='Previous card'
                   icon={<ChevronLeftIcon />}
                   onClick={handlePrevCard}
-                  color="white"
-                  bgColor="gray.500"
-                  borderRadius="full"
-                  _hover={{ bgColor: "gray.600" }}
+                  color='white'
+                  bgColor='gray.500'
+                  borderRadius='full'
+                  _hover={{ bgColor: 'gray.600' }}
                 />
-                <Text fontSize="xl">
+                <Text fontSize='xl'>
                   {currentCardIndex + 1}/{flashcards.length}
                 </Text>
                 <IconButton
-                  aria-label="Next card"
+                  aria-label='Next card'
                   icon={<ChevronRightIcon />}
                   onClick={handleNextCard}
-                  color="white"
-                  bgColor="gray.500"
-                  borderRadius="full"
-                  _hover={{ bgColor: "gray.600" }}
+                  color='white'
+                  bgColor='gray.500'
+                  borderRadius='full'
+                  _hover={{ bgColor: 'gray.600' }}
                 />
               </Flex>
               <Spacer />
               <Button
-                colorScheme="gray"
-                alignSelf="center"
+                colorScheme='gray'
+                alignSelf='center'
                 onClick={() => setTestMode(false)}
               >
                 Back to Flashcards List
               </Button>
             </VStack>
-          </Container>
+          </Box>
         </Box>
       </Scaffold>
     );
@@ -184,10 +196,10 @@ const FlashcardsComponent = () => {
 
   return (
     <Scaffold>
-      <Box bg="white" minH="full" borderRadius="lg" shadow="md" p={5}>
-        <VStack spacing={4} align="stretch" m={10}>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Heading as="h1" size="xl">
+      <Box bg='white' minH='full' borderRadius='lg' shadow='md' p={5}>
+        <VStack spacing={4} align='stretch' m={10}>
+          <Flex justifyContent='space-between' alignItems='center'>
+            <Heading as='h1' size='xl'>
               Flashcards
             </Heading>
 
@@ -195,7 +207,7 @@ const FlashcardsComponent = () => {
               <Select
                 width={300}
                 value={currentCourse}
-                placeholder="Select class"
+                placeholder='Select class'
                 onChange={(e) => setCurrentCourse(e.target.value)}
               >
                 {courses.map((course) => (
@@ -206,16 +218,17 @@ const FlashcardsComponent = () => {
               </Select>
               <Button
                 width={200}
-                variant="outline"
-                colorScheme="blue"
+                variant='outline'
+                colorScheme='blue'
+                isDisabled={flashcards.length == 0}
                 onClick={() => setTestMode(true)}
               >
                 Test Myself
               </Button>
             </HStack>
           </Flex>
-          {flashcards.length == 0 && (
-            <Text fontSize="xl" textAlign="center" marginTop={10}>
+          {currentCourse == '' && (
+            <Text fontSize='xl' textAlign='center' marginTop={10}>
               Select a class to view flashcards
             </Text>
           )}
@@ -223,23 +236,23 @@ const FlashcardsComponent = () => {
             <HStack
               key={index}
               spacing={8}
-              justifyContent="space-between"
-              alignItems="flex-start"
+              justifyContent='space-between'
+              alignItems='flex-start'
               p={5}
-              borderWidth="1px"
-              borderRadius="lg"
+              borderWidth='1px'
+              borderRadius='lg'
             >
-              <VStack align="stretch" width="50%">
-                <Text fontSize="md" fontWeight="bold">
+              <VStack align='stretch' width='50%'>
+                <Text fontSize='md' fontWeight='bold'>
                   TERM
                 </Text>
-                <Text fontSize="lg">{flashcard.content}</Text>
+                <Text fontSize='lg'>{flashcard.content}</Text>
               </VStack>
-              <VStack align="stretch" width="50%">
-                <Text fontSize="md" fontWeight="bold">
+              <VStack align='stretch' width='50%'>
+                <Text fontSize='md' fontWeight='bold'>
                   DEFINITION
                 </Text>
-                <Text fontSize="lg">{flashcard.answer}</Text>
+                <Text fontSize='lg'>{flashcard.answer}</Text>
               </VStack>
             </HStack>
           ))}
