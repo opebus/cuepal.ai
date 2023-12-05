@@ -42,6 +42,7 @@ async function main() {
   const classSession1 = await prisma.classSession.create({
     data: {
       date: new Date(), // Current date or a specific date for the session
+      name: 'Newton’s Law',
       lessonPlan:
         "This lesson aims to introduce students to Sir Isaac Newton's law of universal gravitation and its significance in classical mechanics. Students will learn about Newton's groundbreaking work in understanding gravity and its effects on celestial bodies, as well as on objects on Earth.",
       classId: class1.id,
@@ -53,6 +54,7 @@ async function main() {
   const classSession2 = await prisma.classSession.create({
     data: {
       date: new Date(), // You can change this to a specific date
+      name: 'Kepler’s Laws of Planetary Motion',
       lessonPlan:
         "In this session, we'll explore Johannes Kepler's laws of planetary motion. Kepler's laws describe the motion of planets around the sun. The first law, known as the Law of Ellipses, states that planets orbit the sun in an elliptical path. The second law, the Law of Equal Areas, explains that a line joining a planet and the sun sweeps equal areas during equal intervals of time. The third law, the Law of Harmonies, shows that the square of the orbital period of a planet is directly proportional to the cube of the semi-major axis of its orbit. These laws were pivotal in the advancement of heliocentric models of the solar system and significantly influenced modern astronomy.",
       classId: class1.id,
@@ -64,6 +66,7 @@ async function main() {
   const classSession3 = await prisma.classSession.create({
     data: {
       date: new Date(), // You can change this to a specific date
+      name: 'The Moon',
       lessonPlan:
         "This lesson will focus on Earth's natural satellite, the Moon. We will discuss its formation, its phases, and its impact on Earth, including tidal forces. The session will also cover lunar exploration, including the Apollo missions and recent lunar probes. Students will gain an understanding of the Moon's role in Earth's ecosystem and its significance in human exploration and scientific research.",
       classId: class1.id,

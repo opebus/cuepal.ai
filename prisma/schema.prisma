@@ -30,6 +30,7 @@ model Class {
 
 model ClassSession {
   id         String      @id @default(uuid())
+  name       String
   date       DateTime
   classId    String
   lessonPlan String
