@@ -135,6 +135,7 @@ export default function Dashboard() {
                 series={chartSeries}
                 type='bar'
                 height={500}
+                width={'100%'}
               />
             </Box>
             <Box

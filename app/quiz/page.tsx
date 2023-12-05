@@ -226,6 +226,7 @@ const QuizComponent = () => {
                   options={chartOptions}
                   series={chartSeries}
                   type='donut'
+                  height={'100%'}
                   width={380}
                 />
                 <Button
