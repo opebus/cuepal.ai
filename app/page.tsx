@@ -21,7 +21,7 @@ function Hero() {
         </Text>
       </Heading>
       <SignInButton>
-        <Button colorScheme='teal' variant='solid' px={6}>
+        <Button colorScheme='teal' variant='outline' px={6}>
           Get Started
         </Button>
       </SignInButton>
