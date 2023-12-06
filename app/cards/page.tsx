@@ -159,6 +159,7 @@ const FlashcardsComponent = () => {
               >
                 <IconButton
                   aria-label='Previous card'
+                  variant='outline'
                   icon={<ChevronLeftIcon />}
                   onClick={handlePrevCard}
                   color='white'
@@ -171,6 +172,7 @@ const FlashcardsComponent = () => {
                 </Text>
                 <IconButton
                   aria-label='Next card'
+                  variant='outline'
                   icon={<ChevronRightIcon />}
                   onClick={handleNextCard}
                   color='white'
@@ -183,6 +185,7 @@ const FlashcardsComponent = () => {
               <Button
                 colorScheme='gray'
                 alignSelf='center'
+                variant='outline'
                 onClick={() => setTestMode(false)}
               >
                 Back to Flashcards List
