@@ -19,10 +19,10 @@ import {
   SkeletonCircle,
   Skeleton,
   SkeletonText,
+  useToast,
 } from '@chakra-ui/react';
 import Scaffold from '../../components/Scaffold';
 import dynamic from 'next/dynamic';
-import toast from 'react-hot-toast';
 import { useAuth } from '@clerk/nextjs';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -32,6 +32,7 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 function RadioCard(props) {
   const { getInputProps, htmlProps } = useRadio(props);
   const input = getInputProps();
+
   let borderColor = 'gray.200';
   if (props.isChecked) {
     borderColor = props.isCorrect ? 'green.500' : 'red.500';
@@ -83,6 +84,8 @@ const QuizComponent = ({ params }: { params: { slug: string } }) => {
   const [loading, setLoading] = useState(false);
 
   const { userId } = useAuth();
+
+  const toast = useToast();
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -139,7 +142,7 @@ const QuizComponent = ({ params }: { params: { slug: string } }) => {
 
   const group = getRootProps();
   const chartSeries = [score.correct, score.incorrect];
-  const chartOptions = {
+  const chartOptions: any = {
     labels: ['Correct', 'Incorrect'],
     colors: ['#34D399', '#EF4444'], // green for correct, red for incorrect
     legend: {
@@ -250,7 +253,7 @@ const QuizComponent = ({ params }: { params: { slug: string } }) => {
                 <Text fontSize='2xl' fontWeight='bold'>
                   {question.content}
                 </Text>
-                <RadioGroup value={selectedOption} {...group}>
+                <RadioGroup value={selectedOption} {...(group as any)}>
                   <Stack spacing={4}>
                     {question.options.map((option, index) => {
                       const radio = getRadioProps({ value: option });
@@ -293,7 +296,7 @@ const QuizComponent = ({ params }: { params: { slug: string } }) => {
                 <Text fontSize='xl' fontWeight='bold'>
                   Physics 101
                 </Text>
-                <Text fontSize='md'>Ms. Johnson's Class</Text>
+                <Text fontSize='md'>Ms. Johnson Class</Text>
                 <Center w='full'>
                   <Image
                     src='/newton.svg' // Replace with the path to your vector art image

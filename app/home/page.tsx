@@ -13,13 +13,17 @@ import {
 } from '@chakra-ui/react';
 import Scaffold from '../components/Scaffold';
 import { PiCalendar } from 'react-icons/pi';
+import { useUser } from '@clerk/nextjs';
 
 import dynamic from 'next/dynamic';
+
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
 export default function Dashboard() {
+  const { user } = useUser();
+
   const deadlines = [
     { id: 1, name: "Newton's Gravity", due: '2021-10-5' },
     { id: 2, name: "Keppler's Laws", due: '2021-10-10' },
@@ -45,7 +49,6 @@ export default function Dashboard() {
 
   const chartOptions = {
     chart: {
-      type: 'bar',
       height: 350,
     },
     plotOptions: {
@@ -74,7 +77,7 @@ export default function Dashboard() {
       <Box bg='white' minH='full' borderRadius='lg' shadow='md' m={1} p={5}>
         <Flex direction='column'>
           <Heading as='h1' size='lg' fontWeight='semibold' mb={4}>
-            Good morning, Alexandria
+            Good morning, {user?.firstName}
           </Heading>
           <Text color={'gray'}>Are you ready to learn?</Text>
           <Grid
